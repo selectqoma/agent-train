@@ -1,10 +1,14 @@
-# Agent Voice Trainer
+# Agent Train
 
-Train an LLM agent to behave more like your best real client conversations.
+Train an LLM agent to behave more like your best real client conversations, then apply that behavior to a target agent prompt.
 
 This is not fine-tuning. It does not update model weights. It runs an agent through successful conversation threads, compares each generated reply to the real reply, and updates a plain-text memory when the reply misses the mark.
 
-The result is a behavioral memory you can read, edit, version, and paste into an agent system prompt.
+The result is a behavioral memory you can read, edit, version, and apply into an agent system prompt. It is designed to work well when handed to a coding agent such as Claude Code:
+
+```text
+Clone https://github.com/selectqoma/agent-train and apply it to our agent prompt using these successful conversation threads.
+```
 
 ## Why
 
@@ -19,6 +23,7 @@ This project treats past successful conversations as training examples for that 
 3. Ask a judge model to score that reply against the real successful reply.
 4. If the score is below the threshold, ask the agent to reflect on the gap and rewrite its memory.
 5. Write auditable run artifacts: `scores.csv`, `run_summary.json`, and `scores.png`.
+6. Apply the trained memory into a target prompt file with stable `agent-train` markers.
 
 You can also reserve the last N threads as a held-out evaluation set with `eval_holdout`.
 
@@ -31,8 +36,8 @@ It does not include private client conversations or claim that the bundled examp
 ## Setup
 
 ```bash
-git clone https://github.com/selectqoma/agent-voice-trainer
-cd agent-voice-trainer
+git clone https://github.com/selectqoma/agent-train
+cd agent-train
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -96,6 +101,39 @@ Outputs:
 - `results/scores.csv` - every scored reply, score, judge reason, and whether memory changed.
 - `results/run_summary.json` - model, config, thread counts, score averages.
 - `results/scores.png` - graph generated from the actual score CSV.
+
+## Apply To An Agent Prompt
+
+After training, apply the memory into the target project's prompt or agent instruction file:
+
+```bash
+python3 apply_memory.py \
+  --memory memory.md \
+  --target /path/to/your/project/prompts/system.md
+```
+
+The tool writes between stable markers:
+
+```md
+<!-- agent-train:start -->
+...
+<!-- agent-train:end -->
+```
+
+If the markers already exist, the block is replaced in place. If not, it is appended.
+
+## Code Agent Usage
+
+This repo includes [AGENTS.md](AGENTS.md) and [docs/CODE_AGENT_USAGE.md](docs/CODE_AGENT_USAGE.md) so a coding agent can clone it, run the training loop, and apply the result to another project.
+
+Typical instruction:
+
+```text
+Clone https://github.com/selectqoma/agent-train.
+Use the conversation threads I provide.
+Train memory, apply it to prompts/sales_agent.md, and show me the changed files plus the score summary.
+Do not commit the raw conversation data.
+```
 
 ## Notes
 

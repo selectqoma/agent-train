@@ -4,6 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from apply_memory import END_MARKER, START_MARKER, apply_memory, build_block
 from train import iter_training_pairs, split_threads, summarize, validate_thread, write_scores
 
 
@@ -89,6 +90,36 @@ class TrainHelpersTest(unittest.TestCase):
         self.assertEqual(summary["avg_score"], 7.0)
         self.assertEqual(summary["avg_train_score"], 6.0)
         self.assertEqual(summary["avg_eval_score"], 8.0)
+
+
+class ApplyMemoryTest(unittest.TestCase):
+    def test_build_block_requires_memory(self):
+        with self.assertRaises(ValueError):
+            build_block("")
+
+    def test_apply_memory_appends_or_replaces_marked_block(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            memory = tmp_path / "memory.md"
+            target = tmp_path / "system.md"
+            memory.write_text("- Use short replies.\n", encoding="utf-8")
+            target.write_text("Base prompt.\n", encoding="utf-8")
+
+            apply_memory(str(memory), str(target))
+            first = target.read_text(encoding="utf-8")
+
+            self.assertIn("Base prompt.", first)
+            self.assertIn(START_MARKER, first)
+            self.assertIn("- Use short replies.", first)
+
+            memory.write_text("- Ask one question at a time.\n", encoding="utf-8")
+            apply_memory(str(memory), str(target))
+            second = target.read_text(encoding="utf-8")
+
+            self.assertIn("- Ask one question at a time.", second)
+            self.assertNotIn("- Use short replies.", second)
+            self.assertEqual(second.count(START_MARKER), 1)
+            self.assertEqual(second.count(END_MARKER), 1)
 
 
 if __name__ == "__main__":
