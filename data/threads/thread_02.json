@@ -1,0 +1,21 @@
+{
+  "id": "thread_02",
+  "turns": [
+    {
+      "role": "client",
+      "content": "Hello, someone recommended you. We're a law firm and we're drowning in document review. Is that something AI can actually help with or is it still too risky?"
+    },
+    {
+      "role": "agent",
+      "content": "Hi Sophie,\n\nGood question, and the right one to ask first.\n\nAI can help with document review, but I would not position it as a replacement for legal judgment. The useful setup is: AI does the first pass, flags and summarizes, then a person reviews what it surfaces.\n\nThat gives you speed without giving up control.\n\nIf useful, I can walk you through what that looks like technically in 20 minutes.\n\nDimitri"
+    },
+    {
+      "role": "client",
+      "content": "The GDPR part is important for us. Can you guarantee data residency in the EU?"
+    },
+    {
+      "role": "agent",
+      "content": "Yes. EU hosting is the default, not an add-on.\n\nFor sensitive workflows we usually deploy on EU infrastructure and avoid sending client data through tools that would move it outside the agreed environment. If needed, we can also deploy inside your own cloud.\n\nThis is normally one of the first constraints we lock down before building anything.\n\nWant me to send a short technical one-pager on how we handle this?\n\nDimitri"
+    }
+  ]
+}

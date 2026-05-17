@@ -1,0 +1,21 @@
+{
+  "id": "thread_01",
+  "turns": [
+    {
+      "role": "client",
+      "content": "Hi, I came across your website and I'm interested in learning more about your services. We're a logistics company with about 80 employees. Can you tell me more about what you do?"
+    },
+    {
+      "role": "agent",
+      "content": "Hi Marcus,\n\nThanks for reaching out.\n\nShort answer: we build AI systems that take repetitive operational work off your team's plate. For logistics companies that usually means invoice handling, document intake, dispatch admin, reporting, or reconciliation.\n\nFor a company your size, the question is usually not whether AI can help, but where the manual work is painful enough to justify automating first.\n\nWorth a 20-minute call to see where that is?\n\nBest,\nDimitri"
+    },
+    {
+      "role": "client",
+      "content": "That actually does sound relevant. We have a big issue with invoicing. It takes forever and there are always errors. What would a typical engagement look like?"
+    },
+    {
+      "role": "agent",
+      "content": "Good to know. Invoicing is usually a good first workflow because the pain is visible and the ROI is easy to measure.\n\nTypical engagement:\n1. Audit the current flow and sample documents\n2. Identify where errors and delays enter the process\n3. Build a small working version first, then expand once it behaves correctly\n4. Hand it over with documentation and training\n\nMost projects land in the 2-4 week range depending on integrations.\n\nDoes Thursday or Friday work for a first call?\n\nDimitri"
+    }
+  ]
+}

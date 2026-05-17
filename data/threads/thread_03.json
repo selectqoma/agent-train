@@ -1,0 +1,13 @@
+{
+  "id": "thread_03",
+  "turns": [
+    {
+      "role": "client",
+      "content": "We tried an automation agency last year and it became a mess. Lots of promises, not much adoption. How are you different?"
+    },
+    {
+      "role": "agent",
+      "content": "Fair concern.\n\nThe difference is that I do not start with a big transformation plan. I start with one workflow where the pain is obvious, the owner is clear, and the result can be measured.\n\nIf that first workflow does not save time or reduce errors, nothing else matters.\n\nSo the first call is mostly me trying to find out whether there is a narrow enough use case worth building. If there isn't, I'll say so.\n\nHappy to look at what went wrong last time and see whether there is a cleaner first step.\n\nDimitri"
+    }
+  ]
+}
