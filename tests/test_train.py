@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from apply_memory import END_MARKER, START_MARKER, apply_memory, build_block
+from judge import Judge
 from train import iter_training_pairs, split_threads, summarize, validate_thread, write_scores
 
 
@@ -56,6 +57,9 @@ class TrainHelpersTest(unittest.TestCase):
                 "split": "train",
                 "thread_id": "a",
                 "turn_index": 0,
+                "tone_score": "5.00",
+                "precision_score": "6.00",
+                "coherence_score": "7.00",
                 "score": "6.00",
                 "updated_memory": "true",
                 "reason": "Too long.",
@@ -65,6 +69,9 @@ class TrainHelpersTest(unittest.TestCase):
                 "split": "eval",
                 "thread_id": "b",
                 "turn_index": 0,
+                "tone_score": "8.00",
+                "precision_score": "8.00",
+                "coherence_score": "8.00",
                 "score": "8.00",
                 "updated_memory": "false",
                 "reason": "Good match.",
@@ -90,6 +97,16 @@ class TrainHelpersTest(unittest.TestCase):
         self.assertEqual(summary["avg_score"], 7.0)
         self.assertEqual(summary["avg_train_score"], 6.0)
         self.assertEqual(summary["avg_eval_score"], 8.0)
+
+
+class JudgeParsingTest(unittest.TestCase):
+    def test_extract_score_clamps_values(self):
+        self.assertEqual(Judge._extract_score("TONE: 12", "TONE"), 10.0)
+        self.assertEqual(Judge._extract_score("TONE: -1", "TONE"), 0.0)
+
+    def test_extract_score_requires_label(self):
+        with self.assertRaises(ValueError):
+            Judge._extract_score("SCORE: 8", "TONE")
 
 
 class ApplyMemoryTest(unittest.TestCase):

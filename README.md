@@ -20,7 +20,7 @@ This project treats past successful conversations as training examples for that 
 
 1. Load successful conversation threads from `data/threads/*.json`.
 2. For every client turn, ask the agent to generate the next reply using its current memory.
-3. Ask a judge model to score that reply against the real successful reply.
+3. Ask a judge model to grade the reply against the real successful reply on tone, precision, and coherence.
 4. If the score is below the threshold, ask the agent to reflect on the gap and rewrite its memory.
 5. Write auditable run artifacts: `scores.csv`, `run_summary.json`, and `scores.png`.
 6. Apply the trained memory into a target prompt file with stable `agent-train` markers.
@@ -98,7 +98,7 @@ python3 train.py --config config.example.yaml
 Outputs:
 
 - `memory.md` - the trained behavioral memory.
-- `results/scores.csv` - every scored reply, score, judge reason, and whether memory changed.
+- `results/scores.csv` - every scored reply, tone score, precision score, coherence score, averaged score, judge reason, and whether memory changed.
 - `results/run_summary.json` - model, config, thread counts, score averages.
 - `results/scores.png` - graph generated from the actual score CSV.
 

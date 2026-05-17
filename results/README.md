@@ -1,6 +1,6 @@
 Training runs write artifacts here:
 
-- `scores.csv` - every scored reply with split, thread id, turn index, score, and reason.
+- `scores.csv` - every scored reply with split, thread id, turn index, tone score, precision score, coherence score, averaged score, and reason.
 - `run_summary.json` - model, config, thread count, iteration count, and score aggregates.
 - `scores.png` - score curve generated from `scores.csv`.
 

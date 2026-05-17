@@ -91,7 +91,9 @@ def score_thread(
 ) -> int:
     for turn_index, history, client_msg, ground_truth in iter_training_pairs(thread):
         agent_reply = agent.respond(client_msg, history)
-        score, reason = judge.score(client_msg, agent_reply, ground_truth)
+        judge_result = judge.score(client_msg, agent_reply, ground_truth)
+        score = judge_result.score
+        reason = judge_result.reason
         iteration += 1
 
         rows.append(
@@ -100,6 +102,9 @@ def score_thread(
                 "split": split,
                 "thread_id": thread.get("id", ""),
                 "turn_index": turn_index,
+                "tone_score": f"{judge_result['tone_score']:.2f}",
+                "precision_score": f"{judge_result['precision_score']:.2f}",
+                "coherence_score": f"{judge_result['coherence_score']:.2f}",
                 "score": f"{score:.2f}",
                 "updated_memory": str(update_memory and score < threshold).lower(),
                 "reason": reason,
@@ -128,6 +133,9 @@ def write_scores(path: Path, rows: list[dict]) -> None:
                 "split",
                 "thread_id",
                 "turn_index",
+                "tone_score",
+                "precision_score",
+                "coherence_score",
                 "score",
                 "updated_memory",
                 "reason",

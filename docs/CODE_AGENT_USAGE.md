@@ -42,6 +42,8 @@ Do not commit the raw conversation data.
    - `results/run_summary.json`
    - `results/scores.png`
 
+   `scores.csv` includes tone, precision, and coherence grades plus the averaged final score.
+
 5. Apply to the target project.
 
    ```bash
