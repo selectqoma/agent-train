@@ -20,7 +20,6 @@ REQUIRED_CONFIG = {
     "threads_dir",
     "memory_file",
     "output_dir",
-    "update_threshold",
 }
 
 
@@ -84,7 +83,6 @@ def score_thread(
     thread: dict,
     agent: Agent,
     judge: Judge,
-    threshold: float,
     update_memory: bool,
     rows: list[dict],
     iteration: int,
@@ -106,17 +104,14 @@ def score_thread(
                 "precision_score": f"{judge_result['precision_score']:.2f}",
                 "coherence_score": f"{judge_result['coherence_score']:.2f}",
                 "score": f"{score:.2f}",
-                "updated_memory": str(update_memory and score < threshold).lower(),
+                "updated_memory": str(update_memory).lower(),
                 "reason": reason,
             }
         )
 
-        color = "green" if score >= threshold else "red"
-        console.print(
-            f"  [{color}]{iteration:3d}[/] {split:<5} score=[{color}]{score:.1f}[/] {reason}"
-        )
+        console.print(f"  {iteration:3d} {split:<5} score={score:.1f} {reason}")
 
-        if update_memory and score < threshold:
+        if update_memory:
             agent.update_memory(client_msg, agent_reply, ground_truth, score, reason)
             console.print("       [dim]memory updated[/dim]")
 
@@ -159,7 +154,6 @@ def summarize(rows: list[dict], config: dict, train_count: int, eval_count: int)
         "judge_model": config.get("judge_model", config["model"]),
         "threads": {"train": train_count, "eval": eval_count},
         "iterations": len(rows),
-        "threshold": config["update_threshold"],
         "avg_score": avg(scores),
         "avg_train_score": avg(train_scores),
         "avg_eval_score": avg(eval_scores),
@@ -170,7 +164,6 @@ def summarize(rows: list[dict], config: dict, train_count: int, eval_count: int)
 
 def run(config: dict) -> None:
     output_dir = Path(config["output_dir"])
-    threshold = float(config["update_threshold"])
 
     threads = load_threads(config["threads_dir"])
     if config.get("max_threads"):
@@ -190,7 +183,6 @@ def run(config: dict) -> None:
             thread=thread,
             agent=agent,
             judge=judge,
-            threshold=threshold,
             update_memory=True,
             rows=rows,
             iteration=iteration,
@@ -203,7 +195,6 @@ def run(config: dict) -> None:
             thread=thread,
             agent=agent,
             judge=judge,
-            threshold=threshold,
             update_memory=False,
             rows=rows,
             iteration=iteration,
@@ -216,7 +207,7 @@ def run(config: dict) -> None:
     write_scores(scores_path, rows)
     summary = summarize(rows, config, len(train_threads), len(eval_threads))
     summary_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
-    save_plot([float(row["score"]) for row in rows], str(plot_path), threshold=threshold)
+    save_plot([float(row["score"]) for row in rows], str(plot_path))
 
     table = Table(title="Training summary", show_header=False, box=None)
     table.add_row("Train threads", str(len(train_threads)))

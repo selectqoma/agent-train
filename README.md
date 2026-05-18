@@ -21,9 +21,10 @@ This project treats past successful conversations as training examples for that 
 1. Load successful conversation threads from `data/threads/*.json`.
 2. For every client turn, ask the agent to generate the next reply using its current memory.
 3. Ask a judge model to grade the reply against the real successful reply on tone, precision, and coherence.
-4. If the score is below the threshold, ask the agent to reflect on the gap and rewrite its memory.
-5. Write auditable run artifacts: `scores.csv`, `run_summary.json`, and `scores.png`.
-6. Apply the trained memory into a target prompt file with stable `agent-train` markers.
+4. Ask the agent to reflect on the discrepancy between its reply, the real reply, and the judge's explanation.
+5. Rewrite memory from that discrepancy.
+6. Write auditable run artifacts: `scores.csv`, `run_summary.json`, and `scores.png`.
+7. Apply the trained memory into a target prompt file with stable `agent-train` markers.
 
 You can also reserve the last N threads as a held-out evaluation set with `eval_holdout`.
 
@@ -60,7 +61,6 @@ judge_model: claude-sonnet-4-20250514
 threads_dir: ./data/threads
 memory_file: ./memory.md
 output_dir: ./results
-update_threshold: 7.0
 max_threads: 50
 eval_holdout: 0
 ```
@@ -140,7 +140,7 @@ Do not commit the raw conversation data.
 - Use successful conversations, not average ones.
 - Remove private names and sensitive details before committing data.
 - More threads usually help, but quality matters more than volume.
-- Scores are model-judged, so treat them as directional, not scientific proof.
+- Scores are model-judged and used for measurement, not as the memory update itself.
 - A held-out eval set is recommended before using the memory in production.
 
 ## Limitations

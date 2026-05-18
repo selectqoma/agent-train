@@ -3,6 +3,5 @@ judge_model: claude-sonnet-4-20250514
 threads_dir: ./data/threads
 memory_file: ./memory.md
 output_dir: ./results
-update_threshold: 7.0
 max_threads: 50
 eval_holdout: 0

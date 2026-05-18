@@ -13,6 +13,8 @@ When a user says "clone this and apply it", do the following:
 7. Run the target project's relevant tests or prompt checks.
 8. Report the changed files and the score summary.
 
+Training updates memory from the discrepancy between the generated reply, the real reply, and the judge explanation. Scores are for measurement and graphing.
+
 Do not commit private conversation data, generated `memory.md`, or run artifacts unless the user explicitly asks for that and confirms the data is safe to store.
 
 ## Expected Commands

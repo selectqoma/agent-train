@@ -89,7 +89,7 @@ class TrainHelpersTest(unittest.TestCase):
 
         summary = summarize(
             rows,
-            {"model": "model-a", "judge_model": "model-b", "update_threshold": 7.0},
+            {"model": "model-a", "judge_model": "model-b"},
             train_count=1,
             eval_count=1,
         )

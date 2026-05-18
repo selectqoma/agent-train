@@ -11,7 +11,7 @@ def load_scores(csv_path: str) -> list[float]:
         return [float(row["score"]) for row in csv.DictReader(f)]
 
 
-def save_plot(scores: list[float], path: str, threshold: float = 7.0) -> None:
+def save_plot(scores: list[float], path: str) -> None:
     if not scores:
         return
 
@@ -37,14 +37,6 @@ def save_plot(scores: list[float], path: str, threshold: float = 7.0) -> None:
             label=f"Rolling avg ({window})",
         )
 
-    ax.axhline(
-        y=threshold,
-        color="#aaaaaa",
-        linestyle="--",
-        linewidth=1.2,
-        alpha=0.7,
-        label=f"Update threshold ({threshold:.1f})",
-    )
     ax.set_xlabel("Iteration", fontsize=11, color="#444")
     ax.set_ylabel("Score / 10", fontsize=11, color="#444")
     ax.set_title("Agent voice alignment over training iterations", fontsize=13, fontweight="bold", color="#111", pad=14)

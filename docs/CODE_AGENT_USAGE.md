@@ -43,6 +43,7 @@ Do not commit the raw conversation data.
    - `results/scores.png`
 
    `scores.csv` includes tone, precision, and coherence grades plus the averaged final score.
+   Scores are for inspection and graphing; the memory update comes from the discrepancy between the generated reply and the real reply.
 
 5. Apply to the target project.
 
